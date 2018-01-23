@@ -1,10 +1,9 @@
 // @flow
 import renderApp from './App';
 import eventHandlers from './eventHandlers';
+import initialState from './initialState';
 
-let state = {
-  count: 1,
-};
+let state = initialState;
 
 global.emitEvent = (eventName) => {
   let eventHandler = eventHandlers[eventName];
