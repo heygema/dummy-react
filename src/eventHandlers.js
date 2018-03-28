@@ -1,15 +1,55 @@
 // @flow
-import type {State} from './types/State';
+import type {State, TodoState} from './types/State';
 
-type UpdateFunction = (State) => State;
-type EventHandlerObject = {[eventName: string]: UpdateFunction};
+type UpdateFunction = (State, mixed) => State;
+// type UpdateFunctionWithId = (State, id: number) => State;
+type EventHandlerObject = {
+  [eventName: string]: UpdateFunction,
+};
 
 let eventHandlers: EventHandlerObject = {
-  increaseCount: (oldState) => {
-    return {...oldState, count: oldState.count + 1};
+  handleInput: (oldState, text) => {
+    return {...oldState, input: text};
   },
-  decreaseCount: (oldState) => {
-    return {...oldState, count: oldState.count - 1};
+  submitInput: (oldState) => {
+    let {todoItems, input} = oldState;
+    console.log('input is', input);
+    let newItems = [
+      ...todoItems,
+      {
+        id: Math.random(),
+        content: input,
+        isDone: false,
+      },
+    ];
+    return {...oldState, todoItems: newItems, input: input};
+  },
+  checkOneTodo: (oldState: TodoState, id) => {
+    let {todoItems} = oldState;
+    let a = todoItems.map((x) => {
+      // let {isDone} = x;
+      if (x.id === id) {
+        // x.isDone = !isDone;
+        return {...x, isDone: !x.isDone};
+      }
+      return x;
+    });
+    return {
+      ...oldState,
+      todoItems: a,
+    };
+  },
+  checkAllTodo: (oldState) => {
+    let {todoItems} = oldState;
+    let a = todoItems.map((x) => {
+      let {isDone} = x;
+      x.isDone = !isDone;
+      return x;
+    });
+    return {
+      ...oldState,
+      todoItems: a,
+    };
   },
 };
 

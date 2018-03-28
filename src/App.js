@@ -1,11 +1,12 @@
 // @flow
-import type {State} from './types/State';
+import type {TodoState} from './types/State';
+import renderTodoList from './renderTodoList';
 
-function renderApp(state: State) {
+function renderApp(state: TodoState) {
   return `
-    <p>Hello ${state.count}</p>
-    <button onClick="emitEvent('increaseCount')">Increase</button>
-    <button onClick="emitEvent('decreaseCount')">Decrease</button>
+    ${renderTodoList(state)}
+    <button onClick="emitEvent('checkAllTodo')">Check All</button>
+    
   `;
 }
 

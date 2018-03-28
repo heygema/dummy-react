@@ -5,10 +5,10 @@ import initialState from './initialState';
 
 let state = initialState;
 
-global.emitEvent = (eventName) => {
+global.emitEvent = (eventName: string, eventData: mixed) => {
   let eventHandler = eventHandlers[eventName];
   if (eventHandler) {
-    state = eventHandler(state);
+    state = eventHandler(state, eventData);
     render();
   }
 };
@@ -21,3 +21,5 @@ function render() {
 }
 
 render();
+
+export default global.emitEvent;
